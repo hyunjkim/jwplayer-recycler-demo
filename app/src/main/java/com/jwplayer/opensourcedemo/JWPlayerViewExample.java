@@ -7,12 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
 
 import com.jwplayer.opensourcedemo.recyclerview.JWAdapter;
 import com.jwplayer.opensourcedemo.recyclerview.MyJWList;
 import com.longtailvideo.jwplayer.JWPlayerView;
-import com.longtailvideo.jwplayer.cast.CastManager;
+import com.longtailvideo.jwplayer.media.ads.Ad;
+import com.longtailvideo.jwplayer.media.ads.AdBreak;
+import com.longtailvideo.jwplayer.media.ads.AdSource;
 import com.longtailvideo.jwplayer.media.playlists.PlaylistItem;
 
 import java.util.ArrayList;
@@ -47,30 +48,48 @@ public class JWPlayerViewExample extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_layout);
 
-        VMAPConfig();
+        // Create playlist and add to my list
+        configPlaylist();
+
+        // Pass the playlist to my recyclerview
         setupRecyclerView();
+
 	}
 
     private void setupRecyclerView() {
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.jwplayer_rv);
+        RecyclerView mRecyclerView = findViewById(R.id.jwplayer_rv);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getParent()));
         mRecyclerView.setAdapter(new JWAdapter(myList));
     }
 
-    private void VMAPConfig(){
+    /*
+    * Add one video and click on one video
+    * */
+
+    private void configPlaylist(){
         List<PlaylistItem> playlist = new ArrayList<>();
 
-        String vmapURL = "https://secure.adnxs.com/vmap?id=13028076&cb=CACHEBUSTER&aa-sch-country_code=no&aa-sch-publisher=vg&aa-sch-supply_type=app_phone_android&no-sno-adformat=postroll&no-sno-news-tv_category=1&no-sno-publishergroup=schibsted\n";
+        String imaTag = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=";
 		String videoURL = "http://content.jwplatform.com/videos/kaUXWqTZ-640.mp4";
 
+		Ad ad = new Ad(AdSource.IMA, imaTag);
+		List<AdBreak> adBreakList = new ArrayList<>();
+		AdBreak adBreak = new AdBreak("pre",ad);
+		adBreakList.add(adBreak);
+
     	PlaylistItem playlistItem = new PlaylistItem(videoURL);
+    	playlistItem.setAdSchedule(adBreakList);
     	playlist.add(playlistItem);
 
-    	myList.add(new MyJWList(playlist,vmapURL));
+    	myList.add(new MyJWList(playlist));
 	}
 
     public void print(String activity){
-		Log.i(MEASURE_TAG,  Time.currentTime() + " on" + activity +" (\"JW\")");
+		Log.i(MEASURE_TAG,  Time.currentTime() + "JWPlayerViewExample: on" + activity +" (\"JW\")");
 	}
 
 	@Override

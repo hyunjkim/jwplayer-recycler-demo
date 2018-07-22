@@ -11,12 +11,12 @@
         android:background="@color/gray"
         android:orientation="horizontal">
 
-        <com.longtailvideo.jwplayer.JWPlayerView
-            android:id="@+id/jwplayer"
+        <ImageView
+            android:id="@+id/viewholder_image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-        </com.longtailvideo.jwplayer.JWPlayerView>
+            android:layout_weight="1"
+            android:background="@color/blue"/>
 
         <TextView
             android:id="@+id/viewholder_text"

@@ -9,24 +9,14 @@ import java.util.List;
  */
 
 public class MyJWList {
-    List<PlaylistItem> playlistItem;
-    String vmapURL;
+    public static List<PlaylistItem> playlistItem;
 
-    public MyJWList() {
-
-    }
-
-    public MyJWList(List<PlaylistItem> playlist, String vmapURL) {
+    public MyJWList(List<PlaylistItem> playlist) {
         playlistItem = playlist;
-        this.vmapURL = vmapURL;
     }
 
-    public List<PlaylistItem> getPlaylistItem() {
+    public static List<PlaylistItem> getPlaylistItem() {
         return playlistItem;
-    }
-
-    public String getVmapURL() {
-        return vmapURL;
     }
 
 }

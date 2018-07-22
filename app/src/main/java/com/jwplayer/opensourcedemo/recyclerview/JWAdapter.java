@@ -1,5 +1,6 @@
 package com.jwplayer.opensourcedemo.recyclerview;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +25,9 @@ public class JWAdapter extends RecyclerView.Adapter<JWViewHolder> {
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public JWViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public JWViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.jw_viewholder, parent, false);
@@ -33,7 +35,7 @@ public class JWAdapter extends RecyclerView.Adapter<JWViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(JWViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull JWViewHolder holder, int position) {
         holder.bind(mPlaylist.get(position), position);
     }
 

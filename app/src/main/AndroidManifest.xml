@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.jwplayer.opensourcedemo">
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:name="com.jwplayer.opensourcedemo.MyApplication"
         android:allowBackup="true"
@@ -9,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".JWPlayerViewExample"
+            android:name=".MainJWActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name">
             <intent-filter>
@@ -23,14 +24,12 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name">
         </activity>
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <!--TODO Set your license key-->
-        <!--<meta-data android:name="JW_LICENSE_KEY" android:value="" />-->
-        <meta-data android:name="JW_LICENSE_KEY" android:value="" />
 
+        <!--TODO Set your license key-->
+        <meta-data android:name="JW_LICENSE_KEY" android:value="" />
     </application>
 
 </manifest>

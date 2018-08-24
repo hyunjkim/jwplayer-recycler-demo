@@ -1,5 +1,6 @@
 package com.jwplayer.opensourcedemo.recyclerview;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -7,7 +8,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -15,8 +15,10 @@ import com.jwplayer.opensourcedemo.JWEventHandler;
 import com.jwplayer.opensourcedemo.KeepScreenOnHandler;
 import com.jwplayer.opensourcedemo.R;
 import com.jwplayer.opensourcedemo.Time;
+import com.jwplayer.opensourcedemo.pojo.JWMediaFiles;
 import com.longtailvideo.jwplayer.JWPlayerView;
 import com.longtailvideo.jwplayer.configuration.PlayerConfig;
+import com.longtailvideo.jwplayer.events.FullscreenEvent;
 import com.longtailvideo.jwplayer.events.listeners.VideoPlayerEvents;
 
 import java.util.ArrayList;
@@ -36,20 +38,12 @@ public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnF
     private JWPlayerView mPlayerView;
 
     /**
-     * An instance of our event handling class
-     */
-    private JWEventHandler mEventHandler;
-
-    /**
      * Stored instance of CoordinatorLayout
      * http://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html
      */
-    private List<MyJWList> myList = new ArrayList<>();
-    private TextView outputTextView;
-    private ScrollView mScrollView;
+    private List<JWMediaFiles> myList = new ArrayList<>();
     private CoordinatorLayout mCoordinatorLayout;
-    private JWPlayerView mJWPlayerView;
-    private String videoURL;
+    private String videoURL, imageURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,20 +51,26 @@ public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jwplayerview);
 
-        Bundle bundle = new Bundle();
-        int videoPosition = bundle.getInt("videoPosition");
-
-        //get the file video URL from the playlistitem
-        videoURL = MyJWList.getPlaylistItem().get(videoPosition).getFile();
-
-        mJWPlayerView = findViewById(R.id.jwplayer);
+        mPlayerView = findViewById(R.id.jwplayer);
         mCoordinatorLayout = findViewById(R.id.activity_jwplayerview);
-        outputTextView = findViewById(R.id.output);
-        mScrollView = findViewById(R.id.scroll);
+        TextView outputTextView = findViewById(R.id.output);
+        ScrollView mScrollView = findViewById(R.id.scroll);
+
+        String versionBuild = String.format("Build Version#: %s", mPlayerView.getVersionCode());
+        outputTextView.setText(versionBuild);
+
+        Intent getBundle = getIntent();
+
+        print("HYUNJOO - video file: "+ getBundle.getStringExtra("videoFile"));
+        videoURL = getBundle.getStringExtra("videoFile");
+        imageURL = getBundle.getStringExtra("imageFile");
 
         new KeepScreenOnHandler(mPlayerView, getWindow());
 
-        mEventHandler = new JWEventHandler(mPlayerView, outputTextView, mScrollView);
+        /*
+          An instance of our event handling class
+         */
+        new JWEventHandler(mPlayerView, outputTextView, mScrollView);
 
         setupView();
     }
@@ -79,6 +79,7 @@ public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnF
 
         PlayerConfig playerConfig = new PlayerConfig.Builder()
                 .file(videoURL)
+                .image(imageURL)
                 .autostart(true)
                 .build();
 
@@ -96,11 +97,6 @@ public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnF
         super.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        print("Start");
-    }
 
     @Override
     protected void onResume() {
@@ -116,18 +112,6 @@ public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnF
         mPlayerView.onPause();
         print("Pause");
         super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        print("Stop");
-        super.onStop();
-    }
-
-    @Override
-    protected void onRestart() {
-        print("Restart");
-        super.onRestart();
     }
 
     @Override
@@ -153,13 +137,13 @@ public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnF
 	/**
 	 * Handles JW Player going to and returning from fullscreen by hiding the ActionBar
 	 *
-	 * @param fullscreen true if the player is fullscreen
+	 * @param fullscreenEvent true if the player is fullscreen
 	 */
 	@Override
-	public void onFullscreen(boolean fullscreen) {
+	public void onFullscreen(FullscreenEvent fullscreenEvent) {
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
-			if (fullscreen) {
+			if (fullscreenEvent.getFullscreen()) {
 				actionBar.hide();
 			} else {
 				actionBar.show();
@@ -167,13 +151,13 @@ public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnF
 		}
 
 		// When going to Fullscreen we want to set fitsSystemWindows="false"
-		mCoordinatorLayout.setFitsSystemWindows(!fullscreen);
+		mCoordinatorLayout.setFitsSystemWindows(!fullscreenEvent.getFullscreen());
 	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_jwplayerview, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_jwplayerview, menu);
+//        return true;
+//    }
 
 }

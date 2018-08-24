@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.jwplayer.opensourcedemo.R;
 import com.longtailvideo.jwplayer.JWPlayerView;
+import com.longtailvideo.jwplayer.media.playlists.PlaylistItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +18,16 @@ import java.util.List;
  */
 
 public class JWAdapter extends RecyclerView.Adapter<JWViewHolder> {
-    private List<MyJWList> mPlaylist = new ArrayList<>();
-    private JWPlayerView mPlayerView;
+    private List<PlaylistItem> mPlaylist;
 
-    public JWAdapter(List<MyJWList> mPlaylist) {
+    public JWAdapter(List<PlaylistItem> mPlaylist) {
         this.mPlaylist = mPlaylist;
         notifyDataSetChanged();
     }
 
+    /*
+    * Reusing this cardview
+    * */
     @NonNull
     @Override
     public JWViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,15 +37,19 @@ public class JWAdapter extends RecyclerView.Adapter<JWViewHolder> {
         return new JWViewHolder(view);
     }
 
+    /**
+     * Connecting each playlist item to my view
+     */
     @Override
     public void onBindViewHolder(@NonNull JWViewHolder holder, int position) {
         holder.bind(mPlaylist.get(position), position);
     }
 
+    /*
+    * Size of the playlist I am using
+    * */
     @Override
     public int getItemCount() {
         return mPlaylist.size();
     }
-
-
 }

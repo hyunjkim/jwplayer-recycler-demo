@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-	compileSdkVersion 26
-	buildToolsVersion '28.0.1'
+	compileSdkVersion 27
+	buildToolsVersion '27.0.3'
 
 	defaultConfig {
 		applicationId "com.jwplayer.opensourcedemo"
 		minSdkVersion 16
-		targetSdkVersion 26
+		targetSdkVersion 27
 		versionCode 1
 		versionName "1.0"
         multiDexEnabled true
@@ -21,42 +21,33 @@ android {
     lintOptions{
         abortOnError false
     }
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+	packagingOptions {
+		exclude 'META-INF/android.arch.lifecycle_runtime.version'
+		exclude 'META-INF/com.android.support_support-v4.version'
+		exclude 'META-INF/com.android.support_support-core-utils.version'
+		exclude 'META-INF/com.android.support_support-core-ui.version'
+		exclude 'META-INF/com.android.support_support-compat.version'
+		exclude 'META-INF/com.android.support_support-fragment.version'
+		exclude 'META-INF/com.android.support_support-media-compat.version'
+	}
 }
 
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 	testImplementation 'junit:junit:4.12'
 	implementation 'com.android.support:multidex:1.0.3'
-	implementation 'com.android.support:appcompat-v7:26.0.1'
-	implementation 'com.android.support:recyclerview-v7:26.0.1'
-    implementation 'com.android.support:cardview-v7:26.0.1'
-	implementation 'com.android.support:design:26.0.1'
-
-	implementation 'com.google.android.gms:play-services-ads:15.0.1'
-
-	implementation 'com.longtailvideo.jwplayer:jwplayer-core:2.9.1+1'
-	implementation 'com.longtailvideo.jwplayer:jwplayer-common:2.9.1+1'
-	implementation 'com.longtailvideo.jwplayer:jwplayer-ima:2.9.1+1'// Only required if using IMA features
-
-	def lifecycle_version = "1.1.1"
-
-	// ViewModel and LiveData
-	implementation "android.arch.lifecycle:extensions:$lifecycle_version"
-	// alternatively - just ViewModel
-	implementation "android.arch.lifecycle:viewmodel:$lifecycle_version" // use -ktx for Kotlin
-	// alternatively - just LiveData
-	implementation "android.arch.lifecycle:livedata:$lifecycle_version"
-	// alternatively - Lifecycles only (no ViewModel or LiveData).
-	//     Support library depends on this lightweight import
-	implementation "android.arch.lifecycle:runtime:$lifecycle_version"
-
-	annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
-	// alternately - if using Java8, use the following instead of compiler
-	implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
-
-	// optional - ReactiveStreams support for LiveData
-	implementation "android.arch.lifecycle:reactivestreams:$lifecycle_version"
-
-	// optional - Test helpers for LiveData
-	testImplementation "android.arch.core:core-testing:$lifecycle_version"
+	implementation 'com.android.support:appcompat-v7:27.1.1'
+	implementation 'com.android.support:recyclerview-v7:27.1.1'
+	implementation 'com.android.support:cardview-v7:27.1.1'
+	implementation 'com.android.support:design:27.1.1'
+	implementation('com.github.bumptech.glide:glide:4.7.1') {
+		exclude group: "com.android.support"
+	}
+	implementation 'com.longtailvideo.jwplayer:jwplayer-core:3+'
+	implementation 'com.longtailvideo.jwplayer:jwplayer-common:3+'
+	implementation 'com.longtailvideo.jwplayer:jwplayer-ima:3+'
 }

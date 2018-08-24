@@ -6,14 +6,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jwplayer.opensourcedemo.R;
 import com.jwplayer.opensourcedemo.Time;
+import com.longtailvideo.jwplayer.media.playlists.PlaylistItem;
 
 class JWViewHolder extends RecyclerView.ViewHolder {
 
     private View mRoot;
     private TextView mTitle;
     private ImageView mImageView;
+
 
     public JWViewHolder(View itemView) {
         super(itemView);
@@ -22,15 +25,18 @@ class JWViewHolder extends RecyclerView.ViewHolder {
         mTitle = mRoot.findViewById(R.id.viewholder_text);
     }
 
-    public void bind(MyJWList playlistItem, final int position) {
-        Time.print("HYUNJOO: "+ String.valueOf(playlistItem) + "position:" + position);
-        mTitle.setText("A video");
+    public void bind(final PlaylistItem playlistItem, final int position) {
+        final String image = playlistItem.getImage();
+        mTitle.setText(playlistItem.getTitle());
+        Glide.with(mRoot).load(image).into(mImageView);
 
-        mRoot.setOnClickListener(new View.OnClickListener() {
+
+        mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), JWPlayer.class);
-                intent.putExtra("videoPosition", position);
+                intent.putExtra("videoFile", playlistItem.getFile());
+                intent.putExtra("imageFile", image);
                 v.getContext().startActivity(intent);
             }
         });

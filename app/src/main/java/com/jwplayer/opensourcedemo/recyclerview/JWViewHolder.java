@@ -30,14 +30,11 @@ class JWViewHolder extends RecyclerView.ViewHolder {
         Glide.with(mRoot).load(image).into(mImageView);
 
 
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MyJWPlayer.class);
-                intent.putExtra("videoFile", playlistItem.getFile());
-                intent.putExtra("imageFile", image);
-                v.getContext().startActivity(intent);
-            }
+        mImageView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), MyJWPlayerFragment.class);
+            intent.putExtra("videoFile", playlistItem.getFile());
+            intent.putExtra("imageFile", image);
+            v.getContext().startActivity(intent);
         });
     }
 }

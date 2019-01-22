@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.jwplayer.opensourcedemo.pojo.JWMediaFiles;
 import com.jwplayer.opensourcedemo.recyclerview.JWAdapter;
-import com.jwplayer.opensourcedemo.recyclerview.MyJWPlayer;
+import com.jwplayer.opensourcedemo.recyclerview.MyJWPlayerFragment;
 
 public class MainJWActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -54,11 +54,15 @@ public class MainJWActivity extends AppCompatActivity implements View.OnClickLis
         mRecyclerView.setAdapter(new JWAdapter(jwMediaFiles.getMyPlaylist()));
     }
 
+    /*
+    *
+    * Pass image and video file to JWPlayer Fragment
+    * */
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.imageview:
-                Intent intent = new Intent(v.getContext(), MyJWPlayer.class);
+                Intent intent = new Intent(v.getContext(), MyJWPlayerFragment.class);
                 intent.putExtra("videoFile", jwMediaFiles.getMyPlaylist().get(0).getFile());
                 intent.putExtra("imageFile", jwMediaFiles.getMyPlaylist().get(0).getImage());
                 v.getContext().startActivity(intent);

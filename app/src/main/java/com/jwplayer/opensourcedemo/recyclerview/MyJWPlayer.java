@@ -16,7 +16,6 @@ import com.jwplayer.opensourcedemo.KeepScreenOnHandler;
 import com.jwplayer.opensourcedemo.R;
 import com.jwplayer.opensourcedemo.Time;
 import com.jwplayer.opensourcedemo.pojo.JWMediaFiles;
-import com.longtailvideo.jwplayer.JWPlayerView;
 import com.longtailvideo.jwplayer.configuration.PlayerConfig;
 import com.longtailvideo.jwplayer.events.FullscreenEvent;
 import com.longtailvideo.jwplayer.events.listeners.VideoPlayerEvents;
@@ -28,14 +27,14 @@ import java.util.List;
  * Created by hyunjookim on 4/3/18.
  */
 
-public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnFullscreenListener{
+public class MyJWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnFullscreenListener{
 
-    private static final String MEASURE_TAG = "JWMeasure";
+    private static final String MEASURE_TAG = "JWEVENTHANDLER";
 
     /**
-     * Reference to the {@link JWPlayerView}
+     * Reference to the {@link com.longtailvideo.jwplayer.JWPlayerView}
      */
-    private JWPlayerView mPlayerView;
+    private com.longtailvideo.jwplayer.JWPlayerView mPlayerView;
 
     /**
      * Stored instance of CoordinatorLayout
@@ -65,14 +64,11 @@ public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnF
         videoURL = getBundle.getStringExtra("videoFile");
         imageURL = getBundle.getStringExtra("imageFile");
 
-        new KeepScreenOnHandler(mPlayerView, getWindow());
-
-        /*
-          An instance of our event handling class
-         */
-        new JWEventHandler(mPlayerView, outputTextView, mScrollView);
-
         setupView();
+
+        mPlayerView.addOnFullscreenListener(this);
+        new KeepScreenOnHandler(mPlayerView, getWindow());
+        new JWEventHandler(mPlayerView, outputTextView, mScrollView);
     }
 
     private void setupView() {
@@ -145,7 +141,9 @@ public class JWPlayer extends AppCompatActivity implements VideoPlayerEvents.OnF
 		if (actionBar != null) {
 			if (fullscreenEvent.getFullscreen()) {
 				actionBar.hide();
+				print("onFullscreen(): actionbar hide");
 			} else {
+				print("onFullscreen(): actionbar show");
 				actionBar.show();
 			}
 		}

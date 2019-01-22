@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.jwplayer.opensourcedemo.pojo.JWMediaFiles;
 import com.jwplayer.opensourcedemo.recyclerview.JWAdapter;
-import com.jwplayer.opensourcedemo.recyclerview.JWPlayer;
+import com.jwplayer.opensourcedemo.recyclerview.MyJWPlayer;
 
 public class MainJWActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -58,7 +58,7 @@ public class MainJWActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.imageview:
-                Intent intent = new Intent(v.getContext(), JWPlayer.class);
+                Intent intent = new Intent(v.getContext(), MyJWPlayer.class);
                 intent.putExtra("videoFile", jwMediaFiles.getMyPlaylist().get(0).getFile());
                 intent.putExtra("imageFile", jwMediaFiles.getMyPlaylist().get(0).getImage());
                 v.getContext().startActivity(intent);
@@ -67,7 +67,6 @@ public class MainJWActivity extends AppCompatActivity implements View.OnClickLis
                 break;
         }
     }
-
 
     public void print(String activity){
 		Log.i(MEASURE_TAG,  Time.currentTime() + "MainJWActivity: on" + activity +" (\"JW\")");

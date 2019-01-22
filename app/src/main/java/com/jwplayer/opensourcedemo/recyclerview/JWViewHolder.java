@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jwplayer.opensourcedemo.R;
-import com.jwplayer.opensourcedemo.Time;
 import com.longtailvideo.jwplayer.media.playlists.PlaylistItem;
 
 class JWViewHolder extends RecyclerView.ViewHolder {
@@ -34,7 +33,7 @@ class JWViewHolder extends RecyclerView.ViewHolder {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), JWPlayer.class);
+                Intent intent = new Intent(v.getContext(), MyJWPlayer.class);
                 intent.putExtra("videoFile", playlistItem.getFile());
                 intent.putExtra("imageFile", image);
                 v.getContext().startActivity(intent);
